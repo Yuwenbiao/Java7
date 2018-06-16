@@ -1,0 +1,33 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Java template
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+out/
+"\346\267\261\345\205\245\347\220\206\350\247\243Java7\357\274\232\346\240\270\345\277\203\346\212\200\346\234\257\344\270\216\346\234\200\344\275\263\345\256\236\350\267\265.iml"
+/深入理解Java7：核心技术与最佳实践.iml
+/.idea/

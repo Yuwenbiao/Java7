@@ -5,8 +5,9 @@ package Java7语法新特性.优化的异常处理.Java7的异常处理新特性
  */
 public class ExceptionHandler {
     public void handler() {
+//        ExceptionThrower thrower=new ExceptionThrower();
 //        try {
-//
+//            thrower.manyException();
 //        } catch (ExceptionA | ExceptionB ab) {
 //
 //        } catch (ExceptionC c) {
