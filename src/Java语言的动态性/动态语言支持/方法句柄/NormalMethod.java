@@ -3,6 +3,8 @@ package Java语言的动态性.动态语言支持.方法句柄;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class NormalMethod {
@@ -157,5 +159,67 @@ public class NormalMethod {
         public void setValue(int value) {
             this.value = value;
         }
+    }
+
+    /**
+     * 通过反射API获取方法句柄的示例
+     */
+    public void unreflect() throws Throwable {
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        Constructor constructor = String.class.getConstructor(byte[].class);
+        lookup.unreflectConstructor(constructor);
+
+        Method method = String.class.getMethod("substring", int.class, int.class);
+        lookup.unreflect(method);
+
+        Method privateMethod = ReflectMethodHandle.class.getDeclaredMethod("privateMethod");
+        lookup.unreflectSpecial(privateMethod, ReflectMethodHandle.class);
+
+        Field field = ReflectMethodHandle.class.getField("name");
+        lookup.unreflectGetter(field);
+        lookup.unreflectSetter(field);
+    }
+
+    private class ReflectMethodHandle {
+        String name;
+
+        private void privateMethod() {
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    /**
+     * 获取和设置数组中元素的值的方法句柄的使用示例
+     */
+    public void arrayHandles() throws Throwable {
+        int[] array = new int[]{1, 2, 3, 4, 5};
+        MethodHandle setter = MethodHandles.arrayElementSetter(int[].class);
+        setter.invoke(array, 3, 6);
+
+        MethodHandle getter = MethodHandles.arrayElementGetter(int[].class);
+        int value = (int) getter.invoke(array, 3);//值为6
+    }
+
+    /**
+     * MethodHandles类的identity方法的使用示例
+     */
+    public void identity() throws Throwable {
+        MethodHandle mh = MethodHandles.identity(String.class);
+        String value = (String) mh.invoke("Hello");//值为“Hello”
+    }
+
+    /**
+     * MethodHandles类的constant方法的使用示例
+     */
+    public void constant() throws Throwable {
+        MethodHandle mh = MethodHandles.constant(String.class, "Hello");
+        String value = (String) mh.invoke();//值为“Hello”
     }
 }
