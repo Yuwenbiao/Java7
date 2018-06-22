@@ -61,5 +61,38 @@ public class NormalMethod {
         mh.invoke(this, "Hello", new int[]{2, 4});
     }
 
+    /**
+     * 参数绑定的基本用法
+     */
+    public void bindTo() throws Throwable {
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        MethodHandle mh = lookup.findVirtual(String.class, "length", MethodType.methodType(int.class));
 
+        int len = (int) mh.invoke("Hello");//值为5
+        mh = mh.bindTo("Hello World");
+        len = (int) mh.invoke();//值为11
+    }
+
+    /**
+     * 多次参数绑定的示例
+     */
+    public void multipleBindTo() throws Throwable {
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        MethodHandle mh = lookup.findVirtual(String.class, "indexOf", MethodType.methodType(int.class, String.class, int.class));
+
+        mh = mh.bindTo("Hello").bindTo("l");
+        System.out.println(mh.invoke(2));//值为2
+    }
+
+    /**
+     * 基本类型参数的绑定方式
+     */
+    public void baseBindTo() throws Throwable {
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        MethodHandle mh = lookup.findVirtual(String.class, "substring", MethodType.methodType(String.class, int.class, int.class));
+
+        mh = mh.asType(mh.type().wrap());
+        mh = mh.bindTo("Hello World").bindTo(3);
+        System.out.println(mh.invoke(5));//值为“lo”
+    }
 }
