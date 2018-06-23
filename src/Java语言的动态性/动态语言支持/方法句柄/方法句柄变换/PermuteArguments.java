@@ -19,6 +19,6 @@ public class PermuteArguments {
         value = (int) mhNew.invoke(3, 4);//值为1
 
         MethodHandle mhDuplicateArgs = MethodHandles.permuteArguments(mhCompare, type, 1, 1);
-        value = (int) mhDuplicateArgs.invoke(3, 4);
+        value = (int) mhDuplicateArgs.invoke(3, 4);//值为0
     }
 }
