@@ -1,4 +1,4 @@
-package Java_IO.通道.内存映射文件;
+package Java_IO.通道.文件通道.内存映射文件;
 
 import java.io.IOException;
 import java.nio.MappedByteBuffer;

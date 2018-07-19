@@ -1,4 +1,4 @@
-package Java_IO.通道.锁定文件;
+package Java_IO.通道.文件通道.锁定文件;
 
 import java.io.IOException;
 import java.nio.channels.FileChannel;

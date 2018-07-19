@@ -1,4 +1,4 @@
-package Java_IO.通道.文件数据传输;
+package Java_IO.通道.文件通道.文件数据传输;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

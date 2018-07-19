@@ -1,4 +1,4 @@
-package Java_IO.通道.基本用法;
+package Java_IO.通道.文件通道.基本用法;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

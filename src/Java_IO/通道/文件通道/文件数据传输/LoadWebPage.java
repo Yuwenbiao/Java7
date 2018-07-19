@@ -1,9 +1,8 @@
-package Java_IO.通道.文件数据传输;
+package Java_IO.通道.文件通道.文件数据传输;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.channels.Channel;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
