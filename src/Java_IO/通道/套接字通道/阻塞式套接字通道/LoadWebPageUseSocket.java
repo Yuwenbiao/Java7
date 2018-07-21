@@ -12,7 +12,7 @@ import java.nio.file.StandardOpenOption;
  * 阻塞式客户端套接字的使用示例
  */
 public class LoadWebPageUseSocket {
-    public void loadWebPageUseSocket() throws IOException {
+    public static void loadWebPageUseSocket() throws IOException {
         try (FileChannel destChannel = FileChannel.open(Paths.get("content.txt"), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
              SocketChannel sc = SocketChannel.open(new InetSocketAddress("www.baidu.com", 80))) {
             String request = "GET/HTTP/1.1\r\n\r\nHost: wwww.baidu.com\r\n\n";
@@ -20,5 +20,9 @@ public class LoadWebPageUseSocket {
             sc.write(header);
             destChannel.transferFrom(sc, 0, Integer.MAX_VALUE);
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        loadWebPageUseSocket();
     }
 }
