@@ -9,6 +9,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class LoadWebPageUseSelector {
 
         int finished = 0, total = mapping.size();
         ByteBuffer buffer = ByteBuffer.allocate(32 * 1024);
-        int len = -1;
+        int len;
 
         while (finished < total) {
             //进行通道选择操作，直接调用select方法是会阻塞的，直到所监听的套接字通道至少有一个它们所感兴趣的的事件发生为止
@@ -44,12 +45,15 @@ public class LoadWebPageUseSelector {
                 SelectionKey key = iterator.next();
                 iterator.remove();
 
-                //
+                //判断通道连接是否有效以及是否可读
                 if (key.isValid() && key.isReadable()) {
+                    //获取SelectionKey对应的通道
                     SocketChannel channel = (SocketChannel) key.channel();
+                    //获取通道所连接的地址
                     InetSocketAddress address = (InetSocketAddress) channel.getRemoteAddress();
-                    String filename = address.getHostName() + ".txt";
 
+                    //建立本地文件
+                    String filename = address.getHostName() + ".txt";
                     FileChannel destChannel = FileChannel.open(Paths.get(filename), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
                     buffer.clear();
 
@@ -59,22 +63,27 @@ public class LoadWebPageUseSelector {
                         buffer.compact();
                     }
 
+                    //len为-1说明该通道的所有数据已经读取完毕
                     if (len == -1) {
                         finished++;
+                        //取消对此通道的监听
                         key.cancel();
                     }
+                    //判断通道连接是有效以及可连接
                 } else if (key.isValid() && key.isConnectable()) {
                     SocketChannel channel = (SocketChannel) key.channel();
-                    boolean success = channel.finishConnect();
 
+                    //完成连接并判断连接是否成功建立
+                    boolean success = channel.finishConnect();
                     if (!success) {
                         finished++;
                         key.cancel();
                     } else {
+                        //连接成功，向通道中写入HTTP的请求头信息
                         InetSocketAddress address = (InetSocketAddress) channel.getRemoteAddress();
                         String path = mapping.get(address);
                         String request = "GET" + path + "HTTP/1.0\r\n\r\nHost:" + address.getHostString() + "\r\n\r\n";
-                        ByteBuffer header = ByteBuffer.wrap(request.getBytes("UTF-8"));
+                        ByteBuffer header = ByteBuffer.wrap(request.getBytes(StandardCharsets.UTF_8));
                         channel.write(header);
                     }
                 }
@@ -82,6 +91,11 @@ public class LoadWebPageUseSelector {
         }
     }
 
+    /**
+     * 把url转化成SocketAddress类
+     * @param urls
+     * @return
+     */
     private Map<SocketAddress, String> urlTtoSocketAddress(Set<URL> urls) {
         Map<SocketAddress, String> mapping = new HashMap<>();
 
@@ -113,4 +127,6 @@ public class LoadWebPageUseSelector {
         //注册到选择器上，并指定感兴趣的事件，即连接完成和通道有数据可读
         channel.register(selector, SelectionKey.OP_CONNECT | SelectionKey.OP_READ);
     }
+
+
 }
