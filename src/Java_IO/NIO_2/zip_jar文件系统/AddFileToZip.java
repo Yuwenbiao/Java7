@@ -13,13 +13,17 @@ import java.util.zip.ZipOutputStream;
  */
 public class AddFileToZip {
     public void addFileToZip(File zipFile, File fileToAdd) throws IOException {
+        //创建一个临时文件
         File tempFile = File.createTempFile(zipFile.getName(), null);
         tempFile.delete();
         zipFile.renameTo(tempFile);
+
         try (ZipInputStream input = new ZipInputStream(new FileInputStream(tempFile));
              ZipOutputStream output = new ZipOutputStream(new FileOutputStream(zipFile))) {
             ZipEntry entry = input.getNextEntry();
             byte[] buf = new byte[8192];
+
+            //将临时文件中内容复制到原文件
             while (entry != null) {
                 String name = entry.getName();
                 if (!name.equals(fileToAdd.getName())) {
@@ -31,6 +35,8 @@ public class AddFileToZip {
                 }
                 entry = input.getNextEntry();
             }
+
+            //将新文件添加到原文件
             try (InputStream newFileInput = new FileInputStream(fileToAdd)) {
                 output.putNextEntry(new ZipEntry(fileToAdd.getName()));
                 int len = 0;
@@ -40,6 +46,8 @@ public class AddFileToZip {
                 output.closeEntry();
             }
         }
+
+        //将临时文件删除
         tempFile.delete();
     }
 }

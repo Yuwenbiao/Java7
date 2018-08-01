@@ -17,9 +17,14 @@ public class AddFileToZip2 {
     public void addFileToZip2(File zipFile,File fileToAdd) throws IOException {
         Map<String, String> env = new HashMap<>();
         env.put("create", "true");
+
         try (FileSystem fs = FileSystems.newFileSystem(URI.create("jar:" + zipFile.toURI()), env)) {
+            //待添加文件路径
             Path pathToAddFile = fileToAdd.toPath();
+            //待添加文件在原文件中的路径
             Path pathInZipfile = fs.getPath("/" + fileToAdd.getName());
+
+            //将新文件复制到原文件当中
             Files.copy(pathToAddFile, pathInZipfile, StandardCopyOption.REPLACE_EXISTING);
         }
     }
