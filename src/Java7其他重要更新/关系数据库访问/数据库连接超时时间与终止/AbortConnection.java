@@ -29,6 +29,7 @@ public class AbortConnection {
             super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
         }
 
+        @Override
         public void beforeExecute(Thread t, Runnable r) {
             System.out.println("清理任务：" + r.getClass());
             super.beforeExecute(t, r);
