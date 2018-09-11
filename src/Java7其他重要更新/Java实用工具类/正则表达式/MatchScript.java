@@ -12,12 +12,12 @@ import java.util.regex.Pattern;
 public class MatchScript {
 
     public void matchScript() {
-        String str = "abc 你好 123";
-        Pattern pattern = Pattern.compile("(\\p{script=Han}+)");
-        Matcher matcher = pattern.matcher(str);
-        if (matcher.find()) {
-            //值为“你好”
-            String hans = matcher.group(1);
-        }
+//        String str = "abc 你好 123";
+//        Pattern pattern = Pattern.compile("(\\p{script=Han}+)");
+//        Matcher matcher = pattern.matcher(str);
+//        if (matcher.find()) {
+//            //值为“你好”
+//            String hans = matcher.group(1);
+//        }
     }
 }
